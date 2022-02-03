@@ -18,6 +18,7 @@ let operator = ''
 let x = ''
 let y = ''
 let symbol = []
+let stp = false
 
 let width_text_default = Number(window.getComputedStyle(text).width.replace(/[a-z]/g, ""))
 let fz = 70
@@ -26,7 +27,7 @@ let width_display
 function operation() {
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
         x = Number(x)
-        if (y == 0) y = x
+        if (y == 0 || operator == '' && x != 0) y = x
         if (operator == '-') y -= x
         if (operator == '+') y += x
         if (operator == '*') y *= x
@@ -93,6 +94,7 @@ for (let i = 0; i < btn_num.length; i++) {
 //точка
 dot.addEventListener('click', function () {
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1]) {
+        if (y != 0 && operator == '') x = Number(text.innerHTML)
         text.innerHTML += dot.innerHTML
         x += dot.innerHTML
     }
@@ -112,10 +114,12 @@ btn_backspace.addEventListener('click', function () {
     text.innerHTML = symbol.join('')
     if (text.innerHTML == '') text.innerHTML = '0'
 
-    if (x != '') {
-        symbol = x.split('')
+    if (x != '' && stp == false) {
+        symbol = String(x).split('')
         symbol = symbol.slice(0, symbol.length - 1)
         x = symbol.join('')
+        x = Number(x)
+        if (x == 0) stp = true
         return
     }
     if (operator != '') {
@@ -124,8 +128,10 @@ btn_backspace.addEventListener('click', function () {
     }
 
     if (y != '') {
+        x = y
         symbol = String(y).split('')
         symbol = symbol.slice(0, symbol.length - 1)
         y = symbol.join('')
+        y = Number(y)
     }
 })
