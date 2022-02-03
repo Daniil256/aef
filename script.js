@@ -15,15 +15,15 @@ const btn_clear = document.querySelector('.clear')
 const btn_backspace = document.querySelector('.backspace')
 
 let operator = ''
-let x = 0
-let y = 0
+let x = ''
+let y = ''
 let symbol = []
 
 let width_text_default = Number(window.getComputedStyle(text).width.replace(/[a-z]/g, ""))
 let fz = 70
 let width_text
 let width_display
-function ss() {
+function operation() {
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
         x = Number(x)
         if (y == 0) y = x
@@ -32,7 +32,8 @@ function ss() {
         if (operator == '*') y *= x
         if (operator == '/') y /= x
         if (operator != '/' && operator != '*' && operator != '+' && operator != '-' && operator != '') display.innerHTML = 'Произошла ошибка'
-        x = 0
+        x = ''
+        operator = ''
     }
 }
 
@@ -49,7 +50,7 @@ document.querySelector('body').addEventListener('click', function () {
 })
 //вычитание
 btn_minus.addEventListener('click', function () {
-    ss()
+    operation()
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
         text.innerHTML = y + '-'
         operator = '-'
@@ -60,28 +61,28 @@ btn_minus.addEventListener('click', function () {
 })
 //прибавление
 btn_plus.addEventListener('click', function () {
-    ss()
+    operation()
     text.innerHTML = y + '+'
     operator = '+'
 })
 //умножение
 btn_multiplication.addEventListener('click', function () {
-    ss()
+    operation()
     text.innerHTML = y + '*'
     operator = '*'
 })
 //деление
 btn_division.addEventListener('click', function () {
-    ss()
+    operation()
     text.innerHTML = y + '/'
     operator = '/'
 })
 //равно
 btn_equal.addEventListener('click', function () {
-    ss()
+    operation()
     text.innerHTML = y
 })
-//появление цифр на экрне при клике
+//кнопки цифр
 for (let i = 0; i < btn_num.length; i++) {
     btn_num[i].addEventListener('click', function () {
         if (text.innerHTML == '0') text.innerHTML = ''
@@ -100,8 +101,8 @@ dot.addEventListener('click', function () {
 btn_clear.addEventListener('click', function () {
     text.innerHTML = '0'
     operator = ''
-    x = 0
-    y = 0
+    x = ''
+    y = ''
     text.style.fontSize = '70px'
 })
 //кнопка удалить один символ
@@ -110,5 +111,21 @@ btn_backspace.addEventListener('click', function () {
     symbol = symbol.slice(0, symbol.length - 1)
     text.innerHTML = symbol.join('')
     if (text.innerHTML == '') text.innerHTML = '0'
-    console.log('symbol', symbol);
+
+    if (x != '') {
+        symbol = x.split('')
+        symbol = symbol.slice(0, symbol.length - 1)
+        x = symbol.join('')
+        return
+    }
+    if (operator != '') {
+        operator = ''
+        return
+    }
+
+    if (y != '') {
+        symbol = String(y).split('')
+        symbol = symbol.slice(0, symbol.length - 1)
+        y = symbol.join('')
+    }
 })
