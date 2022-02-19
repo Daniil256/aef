@@ -4,20 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <title>CALC</title>
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="app">
+        <div class="app calc">
             <div class="display"><span class="text">0</span></div>
             <div class="buttons">
                 <div class="btn clear">clear</div>
                 <div class="btn backspace">&larr;</div>
-                <div class="btn func">&#9668;</div>
-                <div class="btn func">&#9658;</div>
+                <div class="btn graph">graph</div>
+                <div class="btn complex_expressions">complex</div>
                 <div class="btn func">%</div>
                 <div class="btn func">x&sup2;</div>
                 <div class="btn func">&sup1;/x</div>
@@ -39,6 +39,17 @@
                 <div class="btn func equal">=</div>
                 <div class="btn func minus">-</div>
             </div>
+        </div>
+        <div class="app graph">
+            <svg>
+                <path class="line" d="M145 295, q 7 -4, 10 -10, 20 -40, 30 -90, 40 -160, 50 -250" />
+                <path class="line" d="M145 295, q -7 -4, -10 -10, -20 -40, -30 -90, -40 -160, -50 -250" />
+                <path class="line" d="M145 295, l 0 0, 15 0, 0 15, -15 0, 0 -15" />
+            </svg>
+            <div class="btn calc">calc</div>
+        </div>
+        <div class="app complex_expressions">
+            <div class="btn calc">calc</div>
         </div>
     </div>
 </body>

@@ -21,13 +21,12 @@ let symbol = []
 let stp = false
 
 let width_text_default = Number(window.getComputedStyle(text).width.replace(/[a-z]/g, ""))
-let fz = 70
 let width_text
 let width_display
 function operation() {
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
         x = Number(x)
-        if (y == 0 || operator == '' && x != 0) y = x
+        if ((y == 0 || operator == '') && (x != '' || x != 0)) y = x
         if (operator == '-') y -= x
         if (operator == '+') y += x
         if (operator == '*') y *= x
@@ -35,25 +34,34 @@ function operation() {
         if (operator != '/' && operator != '*' && operator != '+' && operator != '-' && operator != '') display.innerHTML = 'Произошла ошибка'
         x = ''
         operator = ''
+        text.innerHTML = y
+        fontSize()
     }
 }
-
-//уменьшение размера шрифта, когда число не влазит
+//отображение в консоли информации
 document.querySelector('body').addEventListener('click', function () {
-    console.log(' x', x, '\n', 'y', y, '\n', 'operator', operator, '\n', "======================");
     width_text = Number(window.getComputedStyle(text).width.replace(/[a-z]/g, ""))
     width_display = Number(window.getComputedStyle(display).width.replace(/[a-z]/g, ""))
-    // console.log('display', width_display, '\n', 'text', width_text, '\n,', '======================');
-    if (width_display < width_text) {
-        fz = (90 * fz) / 100
-        text.style.fontSize = fz + 'px'
-    }
+    // console.log(' x', x, '\n', 'y', y, '\n', 'operator', operator, '\n', "======================");
+    console.log('display', width_display + '\n' + 'text', width_text + '\n' + (width_display - width_text) + '\n' + '======================');
 })
+
+//уменьшение размера шрифта, когда число не влазит
+function fontSize() {
+    width_text = Number(window.getComputedStyle(text).width.replace(/[a-z]/g, ""))
+    width_display = Number(window.getComputedStyle(display).width.replace(/[a-z]/g, ""))
+    if (width_display - width_text < -200) {
+        text.style.fontSize = '30px'
+        return
+    }
+    text.style.fontSize = (width_display - width_text) + 200 + '%'
+}
+
 //вычитание
 btn_minus.addEventListener('click', function () {
     operation()
     if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
-        text.innerHTML = y + '-'
+        text.innerHTML += '-'
         operator = '-'
     } else {
         text.innerHTML = '-'
@@ -62,30 +70,39 @@ btn_minus.addEventListener('click', function () {
 })
 //прибавление
 btn_plus.addEventListener('click', function () {
-    operation()
-    text.innerHTML = y + '+'
-    operator = '+'
+    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
+        operation()
+        text.innerHTML += '+'
+        operator = '+'
+    }
 })
 //умножение
 btn_multiplication.addEventListener('click', function () {
-    operation()
-    text.innerHTML = y + '*'
-    operator = '*'
+    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
+        operation()
+        text.innerHTML += '*'
+        operator = '*'
+    }
 })
 //деление
 btn_division.addEventListener('click', function () {
-    operation()
-    text.innerHTML = y + '/'
-    operator = '/'
+    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
+        operation()
+        text.innerHTML += '/'
+        operator = '/'
+    }
 })
 //равно
 btn_equal.addEventListener('click', function () {
-    operation()
-    text.innerHTML = y
+    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && text.innerHTML != '0') {
+        if (x == 0 && y != 0) operator = ''
+        operation()
+    }
 })
 //кнопки цифр
 for (let i = 0; i < btn_num.length; i++) {
     btn_num[i].addEventListener('click', function () {
+        fontSize()
         if (text.innerHTML == '0') text.innerHTML = ''
         text.innerHTML += btn_num[i].innerHTML
         x += btn_num[i].innerHTML
@@ -93,7 +110,7 @@ for (let i = 0; i < btn_num.length; i++) {
 }
 //точка
 dot.addEventListener('click', function () {
-    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1]) {
+    if (Number(text.innerHTML[text.innerHTML.length - 1]) == text.innerHTML[text.innerHTML.length - 1] && (text.innerHTML.match(/\./g, '') == null || operator != '' && text.innerHTML.match(/\./g, '').length == 1)) {
         if (y != 0 && operator == '') x = Number(text.innerHTML)
         text.innerHTML += dot.innerHTML
         x += dot.innerHTML
@@ -126,7 +143,6 @@ btn_backspace.addEventListener('click', function () {
         operator = ''
         return
     }
-
     if (y != '') {
         x = y
         symbol = String(y).split('')
@@ -135,3 +151,26 @@ btn_backspace.addEventListener('click', function () {
         y = Number(y)
     }
 })
+
+
+
+// окно графиков
+document.querySelector('.btn.graph').addEventListener('click', function () {
+    document.querySelector('.app.complex_expressions').style.zIndex = '1'
+    document.querySelector('.app.calc').style.zIndex = '1'
+    document.querySelector('.app.graph').style.zIndex = '2'
+})
+document.querySelector('.btn.complex_expressions').addEventListener('click', function () {
+    document.querySelector('.app.complex_expressions').style.zIndex = '2'
+    document.querySelector('.app.calc').style.zIndex = '1'
+    document.querySelector('.app.graph').style.zIndex = '1'
+})
+for (let i = 0; i < document.querySelectorAll('.btn.calc').length; i++) {
+    document.querySelectorAll('.btn.calc')[i].addEventListener('click', function () {
+        document.querySelector('.app.complex_expressions').style.zIndex = '1'
+        document.querySelector('.app.calc').style.zIndex = '2'
+        document.querySelector('.app.graph').style.zIndex = '1'
+    })
+}
+
+
