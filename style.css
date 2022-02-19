@@ -36,8 +36,8 @@ html {
     z-index: 2;
 }
 .app.graph {
-    z-index: 2;
-    /* background: url(./img/background.png) center / cover no-repeat; */
+    z-index: 1;
+    background: url(./img/background.png) center / cover no-repeat;
 }
 .app.complex_expressions {
     z-index: 1;
