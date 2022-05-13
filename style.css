@@ -36,8 +36,8 @@ html {
     z-index: 2;
 }
 .app.graph {
-    z-index: 1;
-    background: url(./img/background.png) center / cover no-repeat;
+    z-index: 2;
+    transform: translateY();
 }
 .app.complex_expressions {
     z-index: 1;
@@ -107,7 +107,24 @@ svg {
     height: 100%;
 }
 .line {
-    stroke: rgb(0, 0, 0);
+    stroke: #999;
     stroke-width: 1px;
     fill: none;
+}
+.function_graph {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: none;
+    stroke-dasharray: 500 0;
+    filter: url(#shadow);
+
+    /* animation: dasharray 1s ease-in-out 0s alternate-reverse; */
+}
+@keyframes dasharray {
+    0% {
+        stroke-dasharray: 500 0;
+    }
+    100% {
+        stroke-dasharray: 0 500;
+    }
 }

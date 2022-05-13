@@ -172,5 +172,26 @@ for (let i = 0; i < document.querySelectorAll('.btn.calc').length; i++) {
         document.querySelector('.app.graph').style.zIndex = '1'
     })
 }
-
-
+const svg = document.querySelector('svg')
+for (let i = 0; i < 400; i += 15) {
+    svg.innerHTML +=
+        `<path class="line" d="M0 ${i}, l 0 0, 300 0" />
+         <path class="line" d="M${i} 0, l 0 0, 0 500" />`
+}
+document.querySelector('svg').innerHTML +=
+    `<polyline class="function_graph id="path" />
+     <polyline class="function_graph id="path" />`
+console.time();
+let coordPos = ''
+let coordNeg = ''
+let startCoordX = 150 + 0
+let startCoordY = 315 - 0
+for (let i = 0.01; i < 50; i += 0.01) {
+    // coordPos += `${Math.trunc(i * 15 + startCoordX)} ${-Math.trunc(i * i * 15 - startCoordY)}, `
+    // coordNeg += `${-Math.trunc(i * 15 - startCoordX)} ${-Math.trunc(i * i * 15 - startCoordY)}, `
+    coordPos += `${Math.trunc(i * 15 + startCoordX)} ${-Math.trunc(1 / i * 15 - startCoordY)}, `
+    coordNeg += `${-Math.trunc(i * 15 - startCoordX)} ${Math.trunc(1 / i * 15 + startCoordY)}, `
+}
+document.querySelectorAll('.function_graph')[0].setAttribute('points', coordPos)
+document.querySelectorAll('.function_graph')[1].setAttribute('points', coordNeg)
+console.timeEnd();

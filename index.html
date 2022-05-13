@@ -42,9 +42,18 @@
         </div>
         <div class="app graph">
             <svg>
-                <path class="line" d="M145 295, q 7 -4, 10 -10, 20 -40, 30 -90, 40 -160, 50 -250" />
-                <path class="line" d="M145 295, q -7 -4, -10 -10, -20 -40, -30 -90, -40 -160, -50 -250" />
-                <path class="line" d="M145 295, l 0 0, 15 0, 0 15, -15 0, 0 -15" />
+                <g>
+                    <filter id="shadow" filterUnits="userSpaceOnUse" x="0" y="0" width="300" height="400">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur" />
+                        <feOffset in="blur" dx="0" dy="0" result="offsetBlr" />
+                        <feFlood flood-color="rgba(0,0,0)" />
+                        <feComposite operator="in" in2="offsetBlr" result="colBlur" />
+                        <feMerge>
+                            <feMergeNode in="colBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </g>
             </svg>
             <div class="btn calc">calc</div>
         </div>
